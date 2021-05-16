@@ -12,6 +12,8 @@ input.onButtonPressed(Button.AB, function () {
 input.onButtonPressed(Button.B, function () {
 	
 })
+let Pitch = 0
+let Roll = 0
 radio.setGroup(107)
 radio.setTransmitPower(7)
 /**
@@ -22,7 +24,28 @@ radio.setTransmitPower(7)
  * PIN2 == Servo (Blå)
  */
 basic.forever(function () {
-    if (input.rotation(Rotation.Pitch) < 80) {
-    	
+    Roll = input.rotation(Rotation.Roll)
+    Pitch = input.rotation(Rotation.Pitch)
+    if (Roll < -10 && Roll > -180) {
+        radio.sendValue("R", -1)
+        basic.showLeds(`
+            . . # . .
+            . # # . .
+            # # # # #
+            . # # . .
+            . . # . .
+            `)
+    } else if (Roll > 10 && Roll < 180) {
+        radio.sendValue("R", 1)
+        basic.showLeds(`
+            . . # . .
+            . . # # .
+            # # # # #
+            . . # # .
+            . . # . .
+            `)
+    } else {
+        radio.sendValue("R", 0)
+        basic.showIcon(IconNames.No)
     }
 })
